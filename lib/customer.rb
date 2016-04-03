@@ -6,11 +6,11 @@ class Customer
       add_to_customer(options)
     end
 
-    def self.all
+    def self.all # Returns array of customers names.
       return @@customers
     end
 
-    def self.find_by_name(name)
+    def self.find_by_name(name) # Search for the customer via name.
       @@customers.find{|customer| customer[:name] == name}
     end
 
@@ -21,7 +21,7 @@ class Customer
         @@customers.push(options)
       else
         names = @@customers.map{|name| name[:name]}
-          if names.include?(options[:name])
+          if names.include?(options[:name])  #Tests if there is alrady a customer that exists in array.
             raise DuplicateCustomerError, "#{options[:name]} already exists."
           else
             @@customers.push(options)
@@ -30,15 +30,15 @@ class Customer
     end
 end
 
-class Object
+class Object #Creates method for customers to return their name.
   def name
     return self[:name]
   end
 
-  def purchase(product)
+  def purchase(product)#Creates a method that allows a customer to purchase a product by creating a new transaction.
     if product[:stock] > 0
       Transaction.new(self, product)
-    else
+    else #If the product is out of stock raise error. 
       raise OutOfStockError, "#{product[:title]} is out of stock."
     end
   end
