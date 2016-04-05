@@ -1,0 +1,8 @@
+How long did you spend working on this project?
+  15 - 20 hours spread out over about 10 days.
+What was the most rewarding challenge you conquered?
+  The rewarding challenge I beat was probably finding a way to make the .product or .title etc methods work. I spent alot of time researching, and think I came up with the proper way to implement them.
+What two additional features did you build? Why?
+  The first feature was just a small report generator of all the transactions. The second was just adding Time.new as a value for product hash in the transactions class. This is because I think it is very important to track the time products are being purchased, so you can easier issue refunds and keep better bookkeeping.
+Where do you still have room to grow?
+  Alot of places. I think Im still only beggining to understand the basic ruby methods and how they can be applied. I need to continue to read the docs make sure im finding the best possible methods in my code. 
