@@ -5,7 +5,8 @@ class Transaction
       @transactions_hash = {}
       @customer = customer
       @product = product
-      @transactions_hash[@customer] = @product
+      @product[:time] = Time.new
+      @transactions_hash[@customer[:name]] = @product
       add_to_transaction(@transactions_hash)
       remove_stock(@product)
     end
@@ -29,6 +30,18 @@ class Transaction
 
     def customer
       @customer
+    end
+
+    def self.report
+      puts "Transaction Report".center(65)
+      puts "Name".ljust(20) + "Time of Purchase".center(25) +"Product".rjust(40)
+      86.times {|i| print "-"}
+      puts "\n"
+      @@transactions.each do |transaction|
+        transaction.each do |customer, product|
+          puts "#{customer.ljust(20)} #{product[:time]} #{product[:title].rjust(40)}"
+        end
+      end
     end
 
   private
