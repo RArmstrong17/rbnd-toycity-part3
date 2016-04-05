@@ -1,60 +1,40 @@
 class Product
-  attr_accessor :title, :price, :stock
+  attr_accessor :title, :price, :stock, :time
   @@products = Array.new
     def initialize(options = {})
       @title = options[:title]
       @price = options[:price]
       @stock = options[:stock]
-      add_to_products(options)
+      add_to_products
     end
 
-    def self.all
+    def find_by_title(title)
+      @@products.find{|product| product.title == title} # Finds the product via title.
+    end
+
+    def in_stock?
+      @stock > 0 # Selects the products with toys available.
+    end
+
+  class << self
+    def all
       return @@products # Return the Array of initialized products.
     end
 
-    def self.find_by_title(title)
-      @@products.find{|product| product[:title] == title} # Finds the product via title.
+    def find_by_title(title)
+      @@products.find{|product| product.title == title} # Finds the product via title.
     end
 
-    def self.in_stock
-      @@products.select!{|product| product[:stock] > 0} # Selects the
+    def in_stock
+      @@products.select {|product| product.stock > 0}
     end
+  end
+
 
   private
-    def add_to_products(options = {}) # Pass intital arguments through a private method.
-      titles = []
-      if @@products.empty? # Always push first product entered.
-        @@products.push(options)
-      else
-        titles = @@products.map{|title| title[:title]}
-          if titles.include?(options[:title]) # Check to see if product was already entered by matching its title.
-            raise DuplicateProductError, "#{options[:title]} already exists."
-          else
-            @@products.push(options)
-          end
-      end
+    def add_to_products
+    # Check to see if product was already entered by matching its title.
+      raise DuplicateProductError, "#{@title} already exists." if self.find_by_title(@title)
+      @@products << self
     end
-end
-
-class Object # Methods for products objects. 
-  def title
-      return self[:title]
-  end
-
-  def price
-    return self[:price]
-  end
-
-  def stock
-    return self[:stock]
-  end
-
-  def in_stock?
-    if self[:stock] == 0
-      return false
-    else
-      true
-    end
-  end
-
 end

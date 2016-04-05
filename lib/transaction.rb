@@ -1,14 +1,12 @@
 class Transaction
-  attr_accessor :name
+  attr_accessor :product, :customer
   @@transactions = Array.new
     def initialize(customer, product)#Takes two classes and associates the customers name as key to the product they buy.
-      @transactions_hash = {}
       @customer = customer
       @product = product
-      @product[:time] = Time.new
-      @transactions_hash[@customer[:name]] = @product
-      add_to_transaction(@transactions_hash)
-      remove_stock(@product)
+      @product.time = Time.new
+      remove_stock
+      add_to_transaction
     end
 
     def self.all #Array of all trasactions.
@@ -16,7 +14,7 @@ class Transaction
     end
 
     def id # Each transactions has own ID, which is there index in the array plus one.
-      index = @@transactions.index(@transactions_hash)
+      index = @@transactions.index(self)
       return index + 1
     end
 
@@ -38,26 +36,16 @@ class Transaction
       86.times {|i| print "-"}
       puts "\n"
       @@transactions.each do |transaction|
-        transaction.each do |customer, product|
-          puts "#{customer.ljust(20)} #{product[:time]} #{product[:title].rjust(40)}"
-        end
+        puts "#{transaction.customer.name.ljust(20)} #{transaction.product.time} #{transaction.product.title.rjust(40)}"
       end
     end
 
   private
-    def add_to_transaction(options = {})
-      @@transactions.push(options)
+    def add_to_transaction
+      @@transactions << self
     end
 
-    def remove_stock(product) #When a transaction is added, remove stock of the product bought.
-      product[:stock] -= 1
+    def remove_stock #When a transaction is added, remove stock of the product bought.
+      @product.stock -= 1
     end
-end
-
-class Object
-  def product
-    self.each do |name, product|
-      return self[name]
-    end
-  end
 end
